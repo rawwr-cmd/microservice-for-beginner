@@ -6,9 +6,10 @@ import axios from "axios";
 const Postlist = () => {
   const [posts, setPosts] = useState({});
 
+  //we are still creating comment and post with the post service and comment service
   const fetchPosts = async () => {
-    const res = await axios.get("http://localhost:4000/posts");
-
+    const res = await axios.get("http://localhost:4002/posts");
+    // console.log(res.data);
     setPosts(res.data);
   };
 
@@ -17,6 +18,7 @@ const Postlist = () => {
   }, []);
 
   const renderedPosts = Object.values(posts).map((post) => {
+    // console.log(post);
     return (
       <div
         className="card"
@@ -25,7 +27,7 @@ const Postlist = () => {
       >
         <div className="card-body">
           <h3>{post.title}</h3>
-          <CommentList postId={post.id} />
+          <CommentList comments={post.comments} />
           <CommentCreate postId={post.id} />
         </div>
       </div>
