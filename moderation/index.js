@@ -5,12 +5,14 @@ const axios = require("axios");
 const app = express();
 app.use(bodyParser.json());
 
-app.post("/events", async (req, res, next) => {
-  const { type, data } = req.data;
+app.post("/events", async (req, res) => {
+  const { type, data } = req.body;
+  //   console.log(data);
 
   if (type === "CommentCreated") {
-    //checking if orange is present in
-    const status = data.content.include("orange") ? "rejected" : "approved";
+    //checking if orange is present in content
+
+    const status = data.content.includes("orange") ? "rejected" : "approved";
 
     await axios.post("http://localhost:4005/events", {
       type: "CommentModerated",
