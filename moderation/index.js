@@ -7,7 +7,7 @@ app.use(bodyParser.json());
 
 app.post("/events", async (req, res) => {
   const { type, data } = req.body;
-  //   console.log(data);
+  // console.log(data);
 
   if (type === "CommentCreated") {
     //checking if orange is present in content

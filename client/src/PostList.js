@@ -17,6 +17,7 @@ const Postlist = () => {
     fetchPosts();
   }, []);
 
+  // console.log(posts);
   const renderedPosts = Object.values(posts).map((post) => {
     // console.log(post);
     return (

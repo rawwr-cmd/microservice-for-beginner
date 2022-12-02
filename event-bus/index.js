@@ -11,13 +11,17 @@ const events = [];
 app.post("/events", (req, res) => {
   const event = req.body;
 
+  // console.log(event);
   events.push(event);
+
   axios.post("http://localhost:4000/events", event).catch((err) => {
     console.log(err.message);
   }); // Posts to posts service
+
   axios.post("http://localhost:4001/events", event).catch((err) => {
     console.log(err.message);
   }); // Posts to comments service
+
   axios.post("http://localhost:4002/events", event).catch((err) => {
     console.log(err.message);
   }); // Posts to query service
