@@ -1,0 +1,15 @@
+apiVersion: v1
+# pod : the kind of object we want to create
+kind: Pod
+# metadata: config options for the object we are going to create
+# giving the pod its name that is posts
+metadata:
+  name: posts
+# The exact attributes we want to apply to the object we are about to create
+spec:
+  # we can create many containers as we want
+  containers:
+    # make a container with the name of the posts
+    - name: posts
+      # the exact image we want o use
+      image: chipmunkey/posts:0.0.1

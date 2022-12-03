@@ -1,0 +1,23 @@
+#deployement is inside the bucket of the objects called v1
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  #name of the deployement
+  name: posts-depl
+spec:
+  # number of pods we want to create
+  replicas: 1
+  selector:
+    matchLabels:
+      # label can be anything instead of app
+      app: posts
+
+  #very similar to pod config file
+  template:
+    metadata:
+      labels:
+        app: posts
+    spec:
+      containers:
+        - name: posts
+          image: chipmunkey/posts:0.0.8
