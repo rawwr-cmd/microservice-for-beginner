@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: posts-srv
+spec:
+  type: NodePort
+  selector:
+    # name of the pods (labels(match labels) in the deployment, more like a class name html)
+    app: posts
+  ports:
+    # name can be anything we want it to be
+    - name: posts
+      protocol: TCP
+      # port 4000 is our posts listening for traffic at port 4000
+      port: 4000
+      targetPort:
