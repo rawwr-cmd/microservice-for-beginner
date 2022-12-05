@@ -1,0 +1,39 @@
+#deployement is inside the bucket of the objects called v1
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  #name of the deployement
+  name: comments-depl
+spec:
+  # number of pods we want to create
+  replicas: 1
+  selector:
+    matchLabels:
+      # label can be anything instead of app
+      app: comments
+
+  #very similar to pod config file
+  template:
+    metadata:
+      labels:
+        app: comments
+    spec:
+      containers:
+        - name: comments
+          image: chipmunkey/comments
+---
+#cluster IP service
+apiVersion: v1
+kind: Service
+metadata:
+  name: comments-srv
+spec:
+  selector:
+    # matchlabels from the deployment
+    app: comments
+  ports:
+    - name: comments
+      protocol: TCP
+      #port at which eventbus is receiving traffic
+      port: 4001
+      targetPort: 4001

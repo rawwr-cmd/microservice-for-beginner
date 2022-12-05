@@ -13,4 +13,5 @@ spec:
       protocol: TCP
       # port 4000 is our posts listening for traffic at port 4000
       port: 4000
-      targetPort:
+      # targetPort: container running posts image
+      targetPort: 4000

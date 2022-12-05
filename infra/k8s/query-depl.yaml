@@ -1,0 +1,39 @@
+#deployement is inside the bucket of the objects called v1
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  #name of the deployement
+  name: query-depl
+spec:
+  # number of pods we want to create
+  replicas: 1
+  selector:
+    matchLabels:
+      # label can be anything instead of app
+      app: query
+
+  #very similar to pod config file
+  template:
+    metadata:
+      labels:
+        app: query
+    spec:
+      containers:
+        - name: query
+          image: chipmunkey/query
+---
+#cluster IP service
+apiVersion: v1
+kind: Service
+metadata:
+  name: query-srv
+spec:
+  selector:
+    # matchlabels from the deployment
+    app: query
+  ports:
+    - name: query
+      protocol: TCP
+      #port at which eventbus is receiving traffic
+      port: 4002
+      targetPort: 4002
