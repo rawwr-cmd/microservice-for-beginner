@@ -8,7 +8,7 @@ const Postlist = () => {
 
   //we are still creating comment and post with the post service and comment service
   const fetchPosts = async () => {
-    const res = await axios.get("http://localhost:4002/posts");
+    const res = await axios.get("http://posts.com/posts");
     // console.log(res.data);
     setPosts(res.data);
   };

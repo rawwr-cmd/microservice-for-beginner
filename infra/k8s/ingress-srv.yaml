@@ -5,8 +5,10 @@ metadata:
   namespace: default
   annotations:
     # this will help find the routing rules
-    kubernetes.io/ingress.class: ingress-nginx
+    nginx.ingress.kubernetes.io/rewrite-target:
+    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
+  ingressClassName: nginx
   # rules are going to have all the routing rules that we want
   # to apply to teach the ingress controller how to take up the
   # incoming traffic and route them up toward different parts
@@ -15,10 +17,35 @@ spec:
       http:
         paths:
           # incoming traffic on posts
+
           - path: /posts
-            pathType: Prefix
+            pathType: Exact
+            backend:
+              service:
+                name: query-srv
+                port:
+                  number: 4002
+
+          - path: /posts/create
+            pathType: Exact
             backend:
               service:
                 name: posts-clusterip-srv
                 port:
                   number: 4000
+
+          - path: /posts/(.*)/comments
+            pathType: Exact
+            backend:
+              service:
+                name: comments-srv
+                port:
+                  number: 4001
+
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: client-srv
+                port:
+                  number: 3000
