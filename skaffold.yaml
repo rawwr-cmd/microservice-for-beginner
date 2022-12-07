@@ -1,0 +1,74 @@
+# everything we write here doesn't apply to kubernetes, it is just consumed by skaffold
+# it will automate the reconfig file (when we make a change in them) to our cluster
+# 1. when we start skaffold, it will start the k8/files
+# 2. when we make a change, it will reconfig the files
+# 3. when we stop skaffold, find all the objects related to these config files and delete them
+# i.e delete the objects created by them in kubernetes cluster
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  # by default, when skaffold makes a change to our image or rebuild it, it will try to push to dockerhub
+  # it is not required so disabling the default behavior with the settings * push: false *
+  local:
+    push: false
+  artifacts:
+    - image: chipmunkey/client
+      # directory is same as context
+      context: client
+      docker:
+        dockerfile: Dockerfile
+        # if we are making a  change in the js files (src) i.e the given fileformat, it will directly throw(update) it in the pods
+        # however if we are changing anything in the home directory, it's going to rebuild it(our image)
+      sync:
+        manual:
+          - src: "src/**/*.js"
+            dest: .
+
+    - image: chipmunkey/comments
+      context: comments
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+
+    - image: chipmunkey/event-bus
+      context: event-bus
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+
+    - image: chipmunkey/moderation
+      context: moderation
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+
+    - image: chipmunkey/posts
+      context: posts
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+
+    - image: chipmunkey/query
+      context: query
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
